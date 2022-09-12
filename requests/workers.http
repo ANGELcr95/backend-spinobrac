@@ -1,0 +1,28 @@
+@api = http://localhost:3000
+
+GET {{api}}/workers
+
+###
+GET {{api}}/workers/1076624748
+
+###
+POST {{api}}/workers
+Content-Type: application/json
+
+{
+    "dni":1076624748,
+    "name":"Miguel Camacho"
+}
+
+###
+DELETE {{api}}/workers/10766123
+
+###
+PUT {{api}}/workers/10766123
+Content-Type: application/json
+
+{
+    "name":"Usuario prueba numero"
+}
+
+
