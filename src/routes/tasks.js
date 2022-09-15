@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import { deleteTask, getTask, getTaskCount, getTasks, saveTask, updateTask } from '../controllers/tasks'
 import { deleteWorker, getWorker, getWorkers, saveWorker, updateWorker } from '../controllers/workers';
+import storage from '../multer';
+import multer from "multer";
+
+const upload = multer({ storage })
 
 const router = Router() // un obejeto de express con el  que puedo definir rutas
 
@@ -114,7 +118,7 @@ router.put('/tasks/:id', updateTask)
   *     tags: [Tasks]
   */
  
- router.put('/workers/:dni', updateWorker)
+ router.put('/workers/:dni',upload.single('file') ,updateWorker)
  
 
 

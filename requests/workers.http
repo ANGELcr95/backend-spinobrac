@@ -3,7 +3,7 @@
 GET {{api}}/workers
 
 ###
-GET {{api}}/workers/1076624748
+GET {{api}}/workers/54664848
 
 ###
 POST {{api}}/workers
@@ -18,7 +18,7 @@ Content-Type: application/json
 DELETE {{api}}/workers/10766123
 
 ###
-PUT {{api}}/workers/10766123
+PUT {{api}}/workers/649845
 Content-Type: application/json
 
 {

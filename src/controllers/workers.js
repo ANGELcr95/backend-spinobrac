@@ -17,7 +17,13 @@ export const getWorker = async(req, res)=> {
     const [dataTask] = await connection.query('SELECT * FROM workers WHERE document_number = ?',[
         req.params.dni
     ])
-    res.json(dataTask[0])
+
+    if (dataTask.length > 0) {
+        res.json(dataTask[0])
+        return
+    }
+    res.sendStatus(203)
+
 }
 export const saveWorker = async (req, res)=> {
     const connection = await connect()
@@ -40,9 +46,18 @@ export const deleteWorker = async (req, res)=> {
     res.sendStatus(204)
 }
 export const updateWorker = async (req, res)=> {
+    const {body, file} = req
     const connection = await connect()
+    
+    let put = {
+        name:body.name,
+        date_born:body.date_born ? body.date_born: null,
+        eps:body.eps ? body.eps: null,
+        file: file ? `${body.api}/static/img/${file.filename}`: null
+    }
+    
     const result = await connection.query('UPDATE workers SET ? WHERE document_number = ?',[
-        req.body,
+        put,
         req.params.dni
     ])
     res.sendStatus(204)
