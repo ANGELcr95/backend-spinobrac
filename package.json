@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d dist",
     "dev": "nodemon src --exec babel-node",
-    "start": "node dist"
+    "start": "node app"
   },
   "keywords": [],
   "author": "",
