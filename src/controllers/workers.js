@@ -1,4 +1,7 @@
 import { connect } from "../database"
+import { helperImg } from "../multer"
+import * as fs from 'fs';
+
 
 export const getWorkers = async (req, res)=> {
     const connection = await connect()
@@ -47,13 +50,21 @@ export const deleteWorker = async (req, res)=> {
 }
 export const updateWorker = async (req, res)=> {
     const {body, file} = req
+
+    helperImg(req.file.path,  `resize-${req.file.filename}`, 300)
+    .then(()=>{
+        fs.unlink(`./public/img/${req.file.filename}`, (err => {
+            if (err) console.log(err);
+        }));
+    })
+
     const connection = await connect()
     
     let put = {
         name:body.name,
         date_born:body.date_born ? body.date_born: null,
         eps:body.eps ? body.eps: null,
-        file: file ? `${body.api}/static/img/${file.filename}`: null
+        file: file ? `${body.api}/static/img/resize-${file.filename}`: null
     }
     
     const result = await connection.query('UPDATE workers SET ? WHERE document_number = ?',[

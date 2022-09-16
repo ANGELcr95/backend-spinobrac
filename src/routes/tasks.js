@@ -1,10 +1,5 @@
 import { Router } from 'express';
 import { deleteTask, getTask, getTaskCount, getTasks, saveTask, updateTask } from '../controllers/tasks'
-import { deleteWorker, getWorker, getWorkers, saveWorker, updateWorker } from '../controllers/workers';
-import storage from '../multer';
-import multer from "multer";
-
-const upload = multer({ storage })
 
 const router = Router() // un obejeto de express con el  que puedo definir rutas
 
@@ -16,7 +11,7 @@ const router = Router() // un obejeto de express con el  que puedo definir rutas
  *     tags: [Tasks]
  */
 
-router.get('/tasks', getTasks)
+router.get('/', getTasks)
 
 /**
  * @swagger
@@ -26,7 +21,7 @@ router.get('/tasks', getTasks)
  *     tags: [Tasks]
  */
 
-router.get('/tasks/count', getTaskCount)
+router.get('/count', getTaskCount)
 
 /**
  * @swagger
@@ -36,7 +31,7 @@ router.get('/tasks/count', getTaskCount)
  *     tags: [Tasks]
  */
 
-router.get('/tasks/:id', getTask ) // el parametro es llamado id
+router.get('/:id', getTask ) // el parametro es llamado id
 
 /**
  * @swagger
@@ -46,7 +41,7 @@ router.get('/tasks/:id', getTask ) // el parametro es llamado id
  *     tags: [Tasks]
  */
 
-router.post('/tasks', saveTask)
+router.post('/', saveTask)
 
 /**
  * @swagger
@@ -56,7 +51,7 @@ router.post('/tasks', saveTask)
  *     tags: [Tasks]
  */
 
-router.delete('/tasks/:id', deleteTask)
+router.delete('/:id', deleteTask)
 
 /**
  * @swagger
@@ -66,60 +61,8 @@ router.delete('/tasks/:id', deleteTask)
  *     tags: [Tasks]
  */
 
-router.put('/tasks/:id', updateTask)
+router.put('/:id', updateTask)
 
-// ----------------------------------------------------------------
-
-/**
- * @swagger
- * /workers:
- *   get:
- *     summary: Retrieve a lis of workers.
- *     tags: [Workers]
- */
-
- router.get('/workers', getWorkers)
-
- /**
-  * @swagger
-  * /workers/{dni}:
-  *   get:
-  *     summary: Retrieve workers by dni.
-  *     tags: [Tasks]
-  */
- 
- router.get('/workers/:dni', getWorker ) // el parametro es llamado id
- 
- /**
-  * @swagger
-  * /workers:
-  *   post:
-  *     summary: Save a worker.
-  *     tags: [Tasks]
-  */
- 
- router.post('/workers', saveWorker)
- 
- /**
-  * @swagger
-  * /tasks/{dni}:
-  *   delete:
-  *     summary: Delete task by dni.
-  *     tags: [Tasks]
-  */
- 
- router.delete('/workers/:dni', deleteWorker)
- 
- /**
-  * @swagger
-  * /tasks/{dni}:
-  *   put:
-  *     summary: Update data by dni.
-  *     tags: [Tasks]
-  */
- 
- router.put('/workers/:dni',upload.single('file') ,updateWorker)
- 
 
 
 export default router;

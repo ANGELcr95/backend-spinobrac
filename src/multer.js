@@ -2,13 +2,13 @@ import multer from "multer";
 import sharp from "sharp";
 import path from "path";
 
-const helperImg = (filePath,filename, size= 300)=> {
+export const helperImg = (filePath,filename, size= 300)=> {
     return sharp(filePath)
         .resize(size)
-        .toFile(`optimize/${filename}`)
+        .toFile(`public/img/${filename}`)
 } 
 
-const storage = multer.diskStorage({
+export const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, path.join(__dirname,'../public/img'))
     },
@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
     }
 })
 
-export default storage
    
 
 

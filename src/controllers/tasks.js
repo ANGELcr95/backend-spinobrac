@@ -26,11 +26,16 @@ export const getTaskCount = async (req, res)=> {
 }
 export const saveTask = async (req, res)=> {
     const connection = await connect()
+
+    console.log(req.body);
     
-    const result = await connection.query('INSERT INTO tasks(title, description, date) VALUES (?, ?, ?)', [
+    
+    const result = await connection.query('INSERT INTO tasks(title, description, date, file, document_number) VALUES (?, ?, ?, ?, ?)', [
         req.body.title,
         req.body.description,
-        req.body.date
+        req.body.date,
+        req.body.file,
+        req.body.document_number
     ]) // aqui ya me retorna es otra cosa
     
     res.json({
