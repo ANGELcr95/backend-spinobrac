@@ -20,7 +20,7 @@ app.use(routes) // aca uso la rutas en la aplicación
 
 app.use('/static', express.static(path.join(__dirname, '../public')))
 app.get('/', function(req, res){
-    res.send("Welcome")
+    res.send("Well")
 })
 console.log(path.join(__dirname, '../public'));
 
