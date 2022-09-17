@@ -37,7 +37,7 @@ app.use(_routes["default"]); // aca uso la rutas en la aplicación
 
 app.use('/static', _express["default"]["static"](_path["default"].join(__dirname, '../public')));
 app.get('/', function (req, res) {
-  res.send("Welcome");
+  res.send("Well");
 });
 console.log(_path["default"].join(__dirname, '../public'));
 app.use('/docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(specs));
