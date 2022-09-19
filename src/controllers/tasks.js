@@ -9,9 +9,9 @@ export const getTasks = async (req, res)=> {
     // asignarlas a variables de una sola vez. Es útil para
     // ayudar a mantener tu código limpio y conciso. Esta
     // nueva sintaxis es llamada sintaxis de  desestructuración.
+    const connection = await connect()
+    const [data] = await connection.query('SELECT * FROM tasks')
     try {
-        const connection = await connect()
-        const [data] = await connection.query('SELECT * FROM tasks')
         res.json(data)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -19,16 +19,16 @@ export const getTasks = async (req, res)=> {
 }
 export const getTask = async(req, res)=> {
 
+    const connection = await connect()
+    const [dataTask] = await connection.query('SELECT * FROM tasks WHERE id = ?',[
+        req.params.id
+    ])
     try {
-        const connection = await connect()
-        const [dataTask] = await connection.query('SELECT * FROM tasks WHERE id = ?',[
-            req.params.id
-        ])
         if (dataTask.length > 0) {
             res.json(dataTask[0])
-            return
+        } else {
+            handleHttpError(res, 'No encontrado', 203)
         }
-        handleHttpError(res, 'No encontrado', 203)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
@@ -45,15 +45,15 @@ export const getTaskCount = async (req, res)=> {
 }
 export const saveTask = async (req, res)=> {
 
+    const connection = await connect()
+    const result = await connection.query('INSERT INTO tasks(title, description, date, file, document_number) VALUES (?, ?, ?, ?, ?)', [
+        req.body.title,
+        req.body.description,
+        req.body.date,
+        req.body.file,
+        req.body.document_number
+    ]) // aqui ya me retorna es otra cosa
     try {
-        const connection = await connect()
-        const result = await connection.query('INSERT INTO tasks(title, description, date, file, document_number) VALUES (?, ?, ?, ?, ?)', [
-            req.body.title,
-            req.body.description,
-            req.body.date,
-            req.body.file,
-            req.body.document_number
-        ]) // aqui ya me retorna es otra cosa
     
         res.json({
             id:result[0].insertId,
@@ -67,11 +67,11 @@ export const saveTask = async (req, res)=> {
 }
 export const deleteTask = async (req, res)=> {
 
+    const connection = await connect()
+    const result = await connection.query('DELETE FROM tasks WHERE id = ?',[
+        req.params.id
+    ])
     try {
-        const connection = await connect()
-        const result = await connection.query('DELETE FROM tasks WHERE id = ?',[
-            req.params.id
-        ])
         res.sendStatus(204)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -79,12 +79,12 @@ export const deleteTask = async (req, res)=> {
 }
 export const updateTask = async (req, res)=> {
 
+    const connection = await connect()
+    const result = await connection.query('UPDATE tasks SET ? WHERE id = ?',[
+        req.body,
+        req.params.id
+    ])
     try {
-        const connection = await connect()
-        const result = await connection.query('UPDATE tasks SET ? WHERE id = ?',[
-            req.body,
-            req.params.id
-        ])
         res.sendStatus(204)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
