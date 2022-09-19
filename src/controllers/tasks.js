@@ -1,7 +1,7 @@
 import { connect } from "../database"
+import handleHttpError from "../utils/hanldeError";
 
 export const getTasks = async (req, res)=> {
-    const connection = await connect()
 
     // Desestructuración de arreglos en JavaScript
     // Con ECMAScript 6 (ES6), tenemos una nueva sintaxis 
@@ -9,52 +9,84 @@ export const getTasks = async (req, res)=> {
     // asignarlas a variables de una sola vez. Es útil para
     // ayudar a mantener tu código limpio y conciso. Esta
     // nueva sintaxis es llamada sintaxis de  desestructuración.
-    const [data] = await connection.query('SELECT * FROM tasks')
-    res.json(data)
+    try {
+        const connection = await connect()
+        const [data] = await connection.query('SELECT * FROM tasks')
+        res.json(data)
+    } catch (error) {
+        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+    }
 }
 export const getTask = async(req, res)=> {
-    const connection = await connect()
-    const [dataTask] = await connection.query('SELECT * FROM tasks WHERE id = ?',[
-        req.params.id
-    ])
-    res.json(dataTask[0])
+
+    try {
+        const connection = await connect()
+        const [dataTask] = await connection.query('SELECT * FROM tasks WHERE id = ?',[
+            req.params.id
+        ])
+        if (dataTask.length > 0) {
+            res.json(dataTask[0])
+            return
+        }
+        handleHttpError(res, 'No encontrado', 203)
+    } catch (error) {
+        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+    }
 }
 export const getTaskCount = async (req, res)=> {
-    const connection = await connect()
-    const [dataLength] = await connection.query('SELECT COUNT(*) FROM tasks')
-    res.json(dataLength[0]["COUNT(*)"])
+
+    try {
+        const connection = await connect()
+        const [dataLength] = await connection.query('SELECT COUNT(*) FROM tasks')
+        res.json(dataLength[0]["COUNT(*)"])
+    } catch (error) {
+        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+    }
 }
 export const saveTask = async (req, res)=> {
-    const connection = await connect()
 
-    console.log(req.body);
+    try {
+        const connection = await connect()
+        const result = await connection.query('INSERT INTO tasks(title, description, date, file, document_number) VALUES (?, ?, ?, ?, ?)', [
+            req.body.title,
+            req.body.description,
+            req.body.date,
+            req.body.file,
+            req.body.document_number
+        ]) // aqui ya me retorna es otra cosa
     
+        res.json({
+            id:result[0].insertId,
+            ...req.body
+        })
+        
+    } catch (error) {
+        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+    }
     
-    const result = await connection.query('INSERT INTO tasks(title, description, date, file, document_number) VALUES (?, ?, ?, ?, ?)', [
-        req.body.title,
-        req.body.description,
-        req.body.date,
-        req.body.file,
-        req.body.document_number
-    ]) // aqui ya me retorna es otra cosa
-    
-    res.json({
-        id:result[0].insertId,
-        ...req.body
-    })
 }
 export const deleteTask = async (req, res)=> {
-    const connection = await connect()
-    const result = await connection.query('DELETE FROM tasks WHERE id = ?',[
-        req.params.id
-    ])
-    res.sendStatus(204)
+
+    try {
+        const connection = await connect()
+        const result = await connection.query('DELETE FROM tasks WHERE id = ?',[
+            req.params.id
+        ])
+        res.sendStatus(204)
+    } catch (error) {
+        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+    }
 }
 export const updateTask = async (req, res)=> {
-    const connection = await connect()
-    const result = await connection.query('UPDATE tasks SET ? WHERE id = ?',[
-        req.body,
-        req.params.id
-    ])
-    res.sendStatus(204)
+
+    try {
+        const connection = await connect()
+        const result = await connection.query('UPDATE tasks SET ? WHERE id = ?',[
+            req.body,
+            req.params.id
+        ])
+        res.sendStatus(204)
+    } catch (error) {
+        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+    }
 }
