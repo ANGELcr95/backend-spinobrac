@@ -11,6 +11,7 @@ export const getWorkers = async (req, res)=> {
     // asignarlas a variables de una sola vez. Es útil para
     // ayudar a mantener tu código limpio y conciso. Esta
     // nueva sintaxis es llamada sintaxis de  desestructuración.
+
     try {
         const connection = await connect()
         const [data] = await connection.query('SELECT * FROM workers')
@@ -21,6 +22,7 @@ export const getWorkers = async (req, res)=> {
     }
 }
 export const getWorker = async(req, res)=> {
+
     try {
         const connection = await connect()
         const [dataWorker] = await connection.query('SELECT * FROM workers WHERE document_number = ?',[
@@ -58,6 +60,7 @@ export const saveWorker = async (req, res)=> {
 }
 export const deleteWorker = async (req, res)=> {
 
+
     try {
         const connection = await connect()
         const result = await connection.query('DELETE FROM workers WHERE document_number = ?',[
@@ -73,7 +76,6 @@ export const updateWorker = async (req, res)=> {
 
     try {
         const {body, file} = req
-
         helperImg(req.file.path,  `resize-${req.file.filename}`, 300)
         .then(()=>{
             fs.unlink(`./public/img/${req.file.filename}`, (err => {

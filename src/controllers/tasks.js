@@ -9,6 +9,7 @@ export const getTasks = async (req, res)=> {
     // asignarlas a variables de una sola vez. Es útil para
     // ayudar a mantener tu código limpio y conciso. Esta
     // nueva sintaxis es llamada sintaxis de  desestructuración.
+
     try {
         const connection = await connect()
         const [data] = await connection.query('SELECT * FROM tasks')
@@ -28,9 +29,9 @@ export const getTask = async(req, res)=> {
         connection.end()
         if (dataTask.length > 0) {
             res.json(dataTask[0])
-            return
+        } else {
+            handleHttpError(res, 'No encontrado', 203)
         }
-        handleHttpError(res, 'No encontrado', 203)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
