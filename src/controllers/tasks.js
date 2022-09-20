@@ -12,6 +12,7 @@ export const getTasks = async (req, res)=> {
     try {
         const connection = await connect()
         const [data] = await connection.query('SELECT * FROM tasks')
+        connection.end()
         res.json(data)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -24,6 +25,7 @@ export const getTask = async(req, res)=> {
         const [dataTask] = await connection.query('SELECT * FROM tasks WHERE id = ?',[
             req.params.id
         ])
+        connection.end()
         if (dataTask.length > 0) {
             res.json(dataTask[0])
             return
@@ -38,6 +40,7 @@ export const getTaskCount = async (req, res)=> {
     try {
         const connection = await connect()
         const [dataLength] = await connection.query('SELECT COUNT(*) FROM tasks')
+        connection.end()
         res.json(dataLength[0]["COUNT(*)"])
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -54,7 +57,7 @@ export const saveTask = async (req, res)=> {
             req.body.file,
             req.body.document_number
         ]) // aqui ya me retorna es otra cosa
-    
+        connection.end()
         res.json({
             id:result[0].insertId,
             ...req.body
@@ -72,6 +75,7 @@ export const deleteTask = async (req, res)=> {
         const result = await connection.query('DELETE FROM tasks WHERE id = ?',[
             req.params.id
         ])
+        connection.end()
         res.sendStatus(204)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -85,6 +89,7 @@ export const updateTask = async (req, res)=> {
             req.body,
             req.params.id
         ])
+        connection.end()
         res.sendStatus(204)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)

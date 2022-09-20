@@ -14,6 +14,7 @@ export const getWorkers = async (req, res)=> {
     try {
         const connection = await connect()
         const [data] = await connection.query('SELECT * FROM workers')
+        connection.end()
         res.json(data)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -26,7 +27,7 @@ export const getWorker = async(req, res)=> {
             req.params.dni
         ])
 
-        
+        connection.end()
         if (dataWorker.length > 0) {
             res.json(dataWorker[0])
             return
@@ -37,17 +38,20 @@ export const getWorker = async(req, res)=> {
     }
 }
 export const saveWorker = async (req, res)=> {
+    console.log(req.body);
+    
     try {
         const connection = await connect()
         const result = await connection.query('INSERT INTO workers(document_number, name) VALUES (?, ?)', [
             req.body.dni,
             req.body.name
         ]) // aqui ya me retorna es otra cosa
-        
+        connection.end()
         res.json({
             dni:result[0].insertId,
             ...req.body
         })
+
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
@@ -59,6 +63,7 @@ export const deleteWorker = async (req, res)=> {
         const result = await connection.query('DELETE FROM workers WHERE document_number = ?',[
             req.params.dni
         ])
+        connection.end()
         res.sendStatus(204)
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -89,6 +94,7 @@ export const updateWorker = async (req, res)=> {
             put,
             req.params.dni
         ])
+        connection.end()
         res.sendStatus(204)
     
     } catch (error) {
