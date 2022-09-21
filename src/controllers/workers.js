@@ -40,7 +40,6 @@ export const getWorker = async(req, res)=> {
     }
 }
 export const saveWorker = async (req, res)=> {
-    console.log(req.body);
     
     try {
         const connection = await connect()
@@ -48,11 +47,11 @@ export const saveWorker = async (req, res)=> {
             req.body.dni,
             req.body.name
         ]) // aqui ya me retorna es otra cosa
-        connection.end()
         res.json({
             dni:result[0].insertId,
             ...req.body
         })
+        connection.end()
 
     } catch (error) {
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
@@ -73,15 +72,21 @@ export const deleteWorker = async (req, res)=> {
     }
 }
 export const updateWorker = async (req, res)=> {
+console.log(req.params.dni);
 
     try {
         const {body, file} = req
-        helperImg(req.file.path,  `resize-${req.file.filename}`, 300)
-        .then(()=>{
-            fs.unlink(`./public/img/${req.file.filename}`, (err => {
-                if (err) console.log(err);
-            }));
-        })
+
+        console.log(file);
+        
+        if (file) {
+            helperImg(file.path,  `resize-${file.filename}`, 300)
+            .then(()=>{
+                fs.unlink(`./public/img/${file.filename}`, (err => {
+                    if (err) console.log(err);
+                }));
+            })
+        }
     
         const connection = await connect()
         
@@ -100,6 +105,8 @@ export const updateWorker = async (req, res)=> {
         res.sendStatus(204)
     
     } catch (error) {
+        console.log(error);
+        
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
 }

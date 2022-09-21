@@ -13,6 +13,7 @@ export const storage = multer.diskStorage({
       cb(null, path.join(__dirname,'../public/img'))
     },
     filename: function (req, file, cb) {
+        console.log(file);
         const ext = file.originalname.split('.').pop();
       cb(null, `image${Date.now()}.${ext}`)
     }

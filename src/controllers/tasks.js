@@ -83,16 +83,20 @@ export const deleteTask = async (req, res)=> {
     }
 }
 export const updateTask = async (req, res)=> {
-
+    let put = {
+        description:req.body.description
+    }
     try {
         const connection = await connect()
         const result = await connection.query('UPDATE tasks SET ? WHERE id = ?',[
-            req.body,
+            put,
             req.params.id
         ])
         connection.end()
         res.sendStatus(204)
     } catch (error) {
+        console.log(error);
+        
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
 }
