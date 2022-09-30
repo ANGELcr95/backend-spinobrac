@@ -2,6 +2,7 @@ import { connect } from "../database"
 import { helperImg } from "../multer"
 import * as fs from 'fs';
 import handleHttpError from "../utils/hanldeError";
+import { encrypt } from "../utils/handleBcrypt";
 
 
 export const getWorkers = async (req, res)=> {
@@ -59,7 +60,6 @@ export const saveWorker = async (req, res)=> {
 }
 export const deleteWorker = async (req, res)=> {
 
-
     try {
         const connection = await connect()
         const result = await connection.query('DELETE FROM workers WHERE document_number = ?',[
@@ -72,12 +72,9 @@ export const deleteWorker = async (req, res)=> {
     }
 }
 export const updateWorker = async (req, res)=> {
-console.log(req.params.dni);
-
+    
     try {
         const {body, file} = req
-
-        console.log(file);
         
         if (file) {
             helperImg(file.path,  `resize-${file.filename}`, 300)
@@ -94,7 +91,15 @@ console.log(req.params.dni);
             name:body.name,
             date_born:body.date_born ? body.date_born: null,
             eps:body.eps ? body.eps: null,
-            file: file ? `${body.api}/static/img/resize-${file.filename}`: null
+            file: file ? `${body.api}/static/img/resize-${file.filename}`: null,
+            role: body.role
+        }
+        if (body.role == 'Administrativo') {
+            if (body.password) {
+                put.password = await encrypt(body.password)
+            }
+        } else {
+            put.password = null
         }
         
         const result = await connection.query('UPDATE workers SET ? WHERE document_number = ?',[
@@ -105,8 +110,6 @@ console.log(req.params.dni);
         res.sendStatus(204)
     
     } catch (error) {
-        console.log(error);
-        
         handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
 }

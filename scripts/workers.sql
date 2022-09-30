@@ -1,11 +1,13 @@
-USE taskdb;
-
 CREATE TABLE IF NOT EXISTS workers(
     id INT NOT NULL AUTO_INCREMENT,
     document_number INT,
     name VARCHAR(100) NOT NULL,
     eps VARCHAR(100),
-    date_born VARCHAR(100),
+    date_born DATE,
+    file VARCHAR(500),
+    password LONGTEXT,
+    password_end LONGTEXT,
+    role VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 

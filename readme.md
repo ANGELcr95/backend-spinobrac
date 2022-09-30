@@ -12,6 +12,7 @@ swagger-ui-express ( documentation: ver en una interfaz grafica )
 npm i multer(load of archives)
 npm i sharp (resize images)
 npm i fs (search img)
+npm i bcryptjs -S  (encript plan text)
 dotenv ( entorn variables )
 ### Development
 nodemon ( reinit server )

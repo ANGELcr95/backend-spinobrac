@@ -1,0 +1,29 @@
+@api = http://localhost:3000
+
+GET {{api}}/activities
+
+###
+GET {{api}}/activities/2
+
+###
+POST {{api}}/activities
+Content-Type: application/json
+
+{
+    "title":"third task",
+    "description":"some description"
+}
+
+###
+DELETE {{api}}/activities/1
+
+###
+PUT {{api}}/activities/2
+Content-Type: application/json
+
+{
+    "title":"Change of work",
+    "description":"exmapple server how this app"
+}
+
+

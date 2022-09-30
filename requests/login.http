@@ -1,0 +1,37 @@
+@api = http://localhost:3000/login
+
+GET {{api}}/users
+
+###
+
+POST {{api}}/user
+Content-Type: application/json
+
+{
+    "dni":107624748,
+    "password":"test"
+}
+
+###
+POST {{api}}
+Content-Type: application/json
+
+{
+    "dni":123456789,
+    "password":"test",
+    "name":"Gloria Ramirez"
+}
+
+###
+DELETE {{api}}/1
+
+###
+PUT {{api}}/2
+Content-Type: application/json
+
+{
+    "title":"Change of work",
+    "description":"exmapple server how this app"
+}
+
+
