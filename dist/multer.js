@@ -25,6 +25,7 @@ var storage = _multer["default"].diskStorage({
     cb(null, _path["default"].join(__dirname, '../public/img'));
   },
   filename: function filename(req, file, cb) {
+    console.log(file);
     var ext = file.originalname.split('.').pop();
     cb(null, "image".concat(Date.now(), ".").concat(ext));
   }

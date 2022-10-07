@@ -5,23 +5,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateWorker = exports.saveWorker = exports.getWorkers = exports.getWorker = exports.deleteWorker = void 0;
+exports.updateActivity = exports.saveActivity = exports.getActivityCount = exports.getActivity = exports.getActivities = exports.deleteActivity = void 0;
 
 var _database = require("../database");
 
-var _multer = require("../multer");
-
-var fs = _interopRequireWildcard(require("fs"));
-
 var _hanldeError = _interopRequireDefault(require("../utils/hanldeError"));
 
-var _handleBcrypt = require("../utils/handleBcrypt");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -47,7 +37,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var getWorkers = /*#__PURE__*/function () {
+var getActivities = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
     var connection, _yield$connection$que, _yield$connection$que2, data;
 
@@ -62,7 +52,7 @@ var getWorkers = /*#__PURE__*/function () {
           case 3:
             connection = _context.sent;
             _context.next = 6;
-            return connection.query('SELECT * FROM workers');
+            return connection.query('SELECT * FROM activities');
 
           case 6:
             _yield$connection$que = _context.sent;
@@ -86,16 +76,16 @@ var getWorkers = /*#__PURE__*/function () {
     }, _callee, null, [[0, 13]]);
   }));
 
-  return function getWorkers(_x, _x2) {
+  return function getActivities(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.getWorkers = getWorkers;
+exports.getActivities = getActivities;
 
-var getWorker = /*#__PURE__*/function () {
+var getActivity = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var connection, _yield$connection$que3, _yield$connection$que4, dataWorker;
+    var connection, _yield$connection$que3, _yield$connection$que4, dataTask;
 
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -108,50 +98,47 @@ var getWorker = /*#__PURE__*/function () {
           case 3:
             connection = _context2.sent;
             _context2.next = 6;
-            return connection.query('SELECT * FROM workers WHERE document_number = ?', [req.params.dni]);
+            return connection.query('SELECT * FROM activities WHERE id = ?', [req.params.id]);
 
           case 6:
             _yield$connection$que3 = _context2.sent;
             _yield$connection$que4 = _slicedToArray(_yield$connection$que3, 1);
-            dataWorker = _yield$connection$que4[0];
+            dataTask = _yield$connection$que4[0];
             connection.end();
 
-            if (!(dataWorker.length > 0)) {
-              _context2.next = 13;
-              break;
+            if (dataTask.length > 0) {
+              res.json(dataTask[0]);
+            } else {
+              (0, _hanldeError["default"])(res, 'No encontrado', 203);
             }
 
-            res.json(dataWorker[0]);
-            return _context2.abrupt("return");
-
-          case 13:
-            res.sendStatus(203);
-            _context2.next = 19;
+            _context2.next = 16;
             break;
 
-          case 16:
-            _context2.prev = 16;
+          case 13:
+            _context2.prev = 13;
             _context2.t0 = _context2["catch"](0);
             (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
 
-          case 19:
+          case 16:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 16]]);
+    }, _callee2, null, [[0, 13]]);
   }));
 
-  return function getWorker(_x3, _x4) {
+  return function getActivity(_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getWorker = getWorker;
+exports.getActivity = getActivity;
 
-var saveWorker = /*#__PURE__*/function () {
+var getActivityCount = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var connection, result;
+    var connection, _yield$connection$que5, _yield$connection$que6, dataLength;
+
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -163,162 +150,171 @@ var saveWorker = /*#__PURE__*/function () {
           case 3:
             connection = _context3.sent;
             _context3.next = 6;
-            return connection.query('INSERT INTO workers(document_number, name) VALUES (?, ?)', [req.body.dni, req.body.name]);
+            return connection.query('SELECT COUNT(*) FROM activities');
 
           case 6:
-            result = _context3.sent;
-            // aqui ya me retorna es otra cosa
-            res.json(_objectSpread({
-              dni: result[0].insertId
-            }, req.body));
+            _yield$connection$que5 = _context3.sent;
+            _yield$connection$que6 = _slicedToArray(_yield$connection$que5, 1);
+            dataLength = _yield$connection$que6[0];
             connection.end();
-            _context3.next = 14;
+            res.json(dataLength[0]["COUNT(*)"]);
+            _context3.next = 16;
             break;
 
-          case 11:
-            _context3.prev = 11;
+          case 13:
+            _context3.prev = 13;
             _context3.t0 = _context3["catch"](0);
             (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
 
-          case 14:
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 11]]);
+    }, _callee3, null, [[0, 13]]);
   }));
 
-  return function saveWorker(_x5, _x6) {
+  return function getActivityCount(_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.saveWorker = saveWorker;
+exports.getActivityCount = getActivityCount;
 
-var deleteWorker = /*#__PURE__*/function () {
+var saveActivity = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var connection, result;
+    var body, connection, result;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.prev = 0;
-            _context4.next = 3;
+            body = req.body;
+            _context4.next = 4;
             return (0, _database.connect)();
 
-          case 3:
+          case 4:
             connection = _context4.sent;
-            _context4.next = 6;
-            return connection.query('DELETE FROM workers WHERE document_number = ?', [req.params.dni]);
+            _context4.next = 7;
+            return connection.query('INSERT INTO activities(operativo, description, date, file_operativo, document_oper, administrativo, file_admin, document_admin, done) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [body.operativo, body.description, body.date, body.file_operativo, body.document_oper, body.administrativo, body.file_admin, body.document_admin, body.done]);
 
-          case 6:
+          case 7:
             result = _context4.sent;
+            // aqui ya me retorna es otra cosa
             connection.end();
-            res.sendStatus(204);
-            _context4.next = 14;
+            res.json(_objectSpread({
+              id: result[0].insertId
+            }, body));
+            _context4.next = 15;
             break;
 
-          case 11:
-            _context4.prev = 11;
+          case 12:
+            _context4.prev = 12;
             _context4.t0 = _context4["catch"](0);
             (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
 
-          case 14:
+          case 15:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 11]]);
+    }, _callee4, null, [[0, 12]]);
   }));
 
-  return function deleteWorker(_x7, _x8) {
+  return function saveActivity(_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.deleteWorker = deleteWorker;
+exports.saveActivity = saveActivity;
 
-var updateWorker = /*#__PURE__*/function () {
+var deleteActivity = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var body, file, connection, put, result;
+    var connection, result;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.prev = 0;
-            body = req.body, file = req.file;
-
-            if (file) {
-              (0, _multer.helperImg)(file.path, "resize-".concat(file.filename), 300).then(function () {
-                fs.unlink("./public/img/".concat(file.filename), function (err) {
-                  if (err) console.log(err);
-                });
-              });
-            }
-
-            _context5.next = 5;
+            _context5.next = 3;
             return (0, _database.connect)();
 
-          case 5:
+          case 3:
             connection = _context5.sent;
-            put = {
-              name: body.name,
-              date_born: body.date_born ? body.date_born : null,
-              eps: body.eps ? body.eps : null,
-              file: file ? "".concat(body.api, "/static/img/resize-").concat(file.filename) : null,
-              role: body.role
-            };
+            _context5.next = 6;
+            return connection.query('DELETE FROM activities WHERE id = ?', [req.params.id]);
 
-            if (!(body.role == 'Administrativo')) {
-              _context5.next = 14;
-              break;
-            }
-
-            if (!body.password) {
-              _context5.next = 12;
-              break;
-            }
-
-            _context5.next = 11;
-            return (0, _handleBcrypt.encrypt)(body.password);
-
-          case 11:
-            put.password = _context5.sent;
-
-          case 12:
-            _context5.next = 15;
-            break;
-
-          case 14:
-            put.password = null;
-
-          case 15:
-            _context5.next = 17;
-            return connection.query('UPDATE workers SET ? WHERE document_number = ?', [put, req.params.dni]);
-
-          case 17:
+          case 6:
             result = _context5.sent;
             connection.end();
             res.sendStatus(204);
-            _context5.next = 25;
+            _context5.next = 14;
             break;
 
-          case 22:
-            _context5.prev = 22;
+          case 11:
+            _context5.prev = 11;
             _context5.t0 = _context5["catch"](0);
             (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
 
-          case 25:
+          case 14:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 22]]);
+    }, _callee5, null, [[0, 11]]);
   }));
 
-  return function updateWorker(_x9, _x10) {
+  return function deleteActivity(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateWorker = updateWorker;
+exports.deleteActivity = deleteActivity;
+
+var updateActivity = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+    var put, connection, result;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            put = {
+              done: req.body.done
+            };
+            console.log(put);
+            _context6.prev = 2;
+            _context6.next = 5;
+            return (0, _database.connect)();
+
+          case 5:
+            connection = _context6.sent;
+            _context6.next = 8;
+            return connection.query('UPDATE activities SET ? WHERE id = ?', [put, req.params.id]);
+
+          case 8:
+            result = _context6.sent;
+            connection.end();
+            res.sendStatus(204);
+            _context6.next = 17;
+            break;
+
+          case 13:
+            _context6.prev = 13;
+            _context6.t0 = _context6["catch"](2);
+            console.log(_context6.t0);
+            (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
+
+          case 17:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[2, 13]]);
+  }));
+
+  return function updateActivity(_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+exports.updateActivity = updateActivity;

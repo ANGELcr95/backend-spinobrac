@@ -9,7 +9,11 @@ var _express = require("express");
 
 var _tasks = _interopRequireDefault(require("./tasks"));
 
+var _activities = _interopRequireDefault(require("./activities"));
+
 var _workers = _interopRequireDefault(require("./workers"));
+
+var _login = _interopRequireDefault(require("./login"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -27,7 +31,9 @@ var router = (0, _express.Router)(); // const PATH_ROUTES = __dirname;
 // })
 
 router.use('/tasks', _tasks["default"]);
-router.use('/workers', _workers["default"]); // router.use('/workers', import(`./workers`));
+router.use('/workers', _workers["default"]);
+router.use('/activities', _activities["default"]);
+router.use('/login', _login["default"]); // router.use('/workers', import(`./workers`));
 
 var _default = router;
 exports["default"] = _default;
