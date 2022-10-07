@@ -48,15 +48,17 @@ export const getTaskCount = async (req, res)=> {
     }
 }
 export const saveTask = async (req, res)=> {
-
     try {
         const connection = await connect()
-        const result = await connection.query('INSERT INTO tasks(title, description, date, file, document_number) VALUES (?, ?, ?, ?, ?)', [
+        const result = await connection.query('INSERT INTO tasks(title, description, date, file, document_number, administrativo, document_admin, type_risk) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [
             req.body.title,
             req.body.description,
             req.body.date,
             req.body.file,
-            req.body.document_number
+            req.body.document_number,
+            req.body.administrativo,
+            req.body.document_admin,
+            req.body.type_risk
         ]) // aqui ya me retorna es otra cosa
         connection.end()
         res.json({
@@ -84,7 +86,8 @@ export const deleteTask = async (req, res)=> {
 }
 export const updateTask = async (req, res)=> {
     let put = {
-        description:req.body.description
+        description:req.body.description,
+        type_risk:req.body.type_risk
     }
     try {
         const connection = await connect()
