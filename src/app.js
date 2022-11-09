@@ -6,10 +6,20 @@ import path from "path";
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
 import { options } from "./swaggerOptions";
+import { Server as SocketServer} from 'socket.io'
+import http from 'http'
 
 const specs = swaggerJSDoc(options)
 
 const app = express();
+const server = http.createServer(app)
+const io = new SocketServer(server)
+
+io.on('connection',(socket)=>{
+    socket.on('userNew',(user)=>{
+      socket.broadcast.emit('userNew', user)
+    })
+})
 
 app.use(cors()); // para que que otros server  se conecten otro es el https pero para desarrollo
 app.use(morgan("dev")); //ver peticiones que van llegando
@@ -26,4 +36,4 @@ console.log(path.join(__dirname, '../public'));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-export default app;
+export default server;
