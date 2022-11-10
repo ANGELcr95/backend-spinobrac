@@ -15,12 +15,9 @@ const app = express();
 const server = http.createServer(app)
 const io = new SocketServer(server)
 
-io.on('connection',(socket)=>{
-    socket.on('userNew',(user)=>{
-      socket.broadcast.emit('userNew', user)
-    })
-})
 
+
+// Middlewares
 app.use(cors()); // para que que otros server  se conecten otro es el https pero para desarrollo
 app.use(morgan("dev")); //ver peticiones que van llegando
 app.use(express.json()); // para que express entienda los post de json
@@ -35,5 +32,20 @@ app.get('/', function(req, res){
 console.log(path.join(__dirname, '../public'));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+io.on("connection", (socket) => {
+  console.log(`⚡: ${socket.id} user just connected!`);
+  socket.on("socketUsers", () => {
+    let id = `${socket.id}-${new Date().toLocaleString()}`
+    socket.broadcast.emit("socketUsers", id);
+  });
+  socket.on("socketReport", () => {
+    let id = `${socket.id}-${new Date().toLocaleString()}`
+    socket.broadcast.emit("socketReport", id);
+  });
+  socket.on("socketUpdateActivity", (data) => {
+    socket.broadcast.emit("socketUpdateActivity", data);
+  });
+});
 
 export default server;
