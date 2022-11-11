@@ -94,7 +94,9 @@ export const updateWorker = async (req, res)=> {
             file: file ? `${body.api}/static/img/resize-${file.filename}`: null,
             role: body.role
         }
-        if (body.role == 'Administrativo') {
+        console.log(body);
+        
+        if (body.role == 'Administrativo' || body.role == 'Root') {
             if (body.password) {
                 put.password = await encrypt(body.password)
             }

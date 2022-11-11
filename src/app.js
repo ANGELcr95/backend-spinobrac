@@ -43,8 +43,11 @@ io.on("connection", (socket) => {
     let id = `${socket.id}-${new Date().toLocaleString()}`
     socket.broadcast.emit("socketReport", id);
   });
-  socket.on("socketUpdateActivity", (data) => {
-    socket.broadcast.emit("socketUpdateActivity", data);
+  socket.on("socketActivity", (data) => {
+    socket.broadcast.emit("socketActivity", data);
+  });
+  socket.on("socketRenderActivity", (data) => {
+    socket.broadcast.emit("socketRenderActivity", data);
   });
 });
 
