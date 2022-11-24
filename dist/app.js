@@ -33,12 +33,8 @@ var app = (0, _express["default"])();
 
 var server = _http["default"].createServer(app);
 
-var io = new _socket.Server(server);
-io.on('connection', function (socket) {
-  socket.on('userNew', function (user) {
-    socket.broadcast.emit('userNew', user);
-  });
-});
+var io = new _socket.Server(server); // Middlewares
+
 app.use((0, _cors["default"])()); // para que que otros server  se conecten otro es el https pero para desarrollo
 
 app.use((0, _morgan["default"])("dev")); //ver peticiones que van llegando
@@ -54,5 +50,22 @@ app.get('/', function (req, res) {
 });
 console.log(_path["default"].join(__dirname, '../public'));
 app.use('/docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(specs));
+io.on("connection", function (socket) {
+  console.log("\u26A1: ".concat(socket.id, " user just connected!"));
+  socket.on("socketUsers", function () {
+    var id = "".concat(socket.id, "-").concat(new Date().toLocaleString());
+    socket.broadcast.emit("socketUsers", id);
+  });
+  socket.on("socketReport", function () {
+    var id = "".concat(socket.id, "-").concat(new Date().toLocaleString());
+    socket.broadcast.emit("socketReport", id);
+  });
+  socket.on("socketActivity", function (data) {
+    socket.broadcast.emit("socketActivity", data);
+  });
+  socket.on("socketRenderActivity", function (data) {
+    socket.broadcast.emit("socketRenderActivity", data);
+  });
+});
 var _default = server;
 exports["default"] = _default;

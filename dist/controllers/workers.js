@@ -268,52 +268,53 @@ var updateWorker = /*#__PURE__*/function () {
               file: file ? "".concat(body.api, "/static/img/resize-").concat(file.filename) : null,
               role: body.role
             };
+            console.log(body);
 
-            if (!(body.role == 'Administrativo')) {
-              _context5.next = 14;
+            if (!(body.role == 'Administrativo' || body.role == 'Root')) {
+              _context5.next = 15;
               break;
             }
 
             if (!body.password) {
-              _context5.next = 12;
+              _context5.next = 13;
               break;
             }
 
-            _context5.next = 11;
+            _context5.next = 12;
             return (0, _handleBcrypt.encrypt)(body.password);
 
-          case 11:
+          case 12:
             put.password = _context5.sent;
 
-          case 12:
-            _context5.next = 15;
+          case 13:
+            _context5.next = 16;
             break;
 
-          case 14:
+          case 15:
             put.password = null;
 
-          case 15:
-            _context5.next = 17;
+          case 16:
+            _context5.next = 18;
             return connection.query('UPDATE workers SET ? WHERE document_number = ?', [put, req.params.dni]);
 
-          case 17:
+          case 18:
             result = _context5.sent;
             connection.end();
             res.sendStatus(204);
-            _context5.next = 25;
+            _context5.next = 26;
             break;
 
-          case 22:
-            _context5.prev = 22;
+          case 23:
+            _context5.prev = 23;
             _context5.t0 = _context5["catch"](0);
             (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
 
-          case 25:
+          case 26:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 22]]);
+    }, _callee5, null, [[0, 23]]);
   }));
 
   return function updateWorker(_x9, _x10) {
