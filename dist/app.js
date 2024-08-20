@@ -46,26 +46,26 @@ app.use(_routes["default"]); // aca uso la rutas en la aplicación
 
 app.use('/static', _express["default"]["static"](_path["default"].join(__dirname, '../public')));
 app.get('/', function (req, res) {
-  res.send("Well");
+  res.send("Well-App");
 });
 console.log(_path["default"].join(__dirname, '../public'));
-app.use('/docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(specs));
-io.on("connection", function (socket) {
-  console.log("\u26A1: ".concat(socket.id, " user just connected!"));
-  socket.on("socketUsers", function () {
-    var id = "".concat(socket.id, "-").concat(new Date().toLocaleString());
-    socket.broadcast.emit("socketUsers", id);
-  });
-  socket.on("socketReport", function () {
-    var id = "".concat(socket.id, "-").concat(new Date().toLocaleString());
-    socket.broadcast.emit("socketReport", id);
-  });
-  socket.on("socketActivity", function (data) {
-    socket.broadcast.emit("socketActivity", data);
-  });
-  socket.on("socketRenderActivity", function (data) {
-    socket.broadcast.emit("socketRenderActivity", data);
-  });
-});
+app.use('/docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(specs)); // io.on("connection", (socket) => {
+//   console.log(`⚡: ${socket.id} user just connected!`);
+//   socket.on("socketUsers", () => {
+//     let id = `${socket.id}-${new Date().toLocaleString()}`
+//     socket.broadcast.emit("socketUsers", id);
+//   });
+//   socket.on("socketReport", () => {
+//     let id = `${socket.id}-${new Date().toLocaleString()}`
+//     socket.broadcast.emit("socketReport", id);
+//   });
+//   socket.on("socketActivity", (data) => {
+//     socket.broadcast.emit("socketActivity", data);
+//   });
+//   socket.on("socketRenderActivity", (data) => {
+//     socket.broadcast.emit("socketRenderActivity", data);
+//   });
+// });
+
 var _default = server;
 exports["default"] = _default;

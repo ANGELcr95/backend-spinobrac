@@ -21,6 +21,11 @@ nodemon ( reinit server )
 @babel/preset-env ( convertr j moderno a actual )
 @babel/node ( ejecute el codigo atraves de c node )
 
+@babel/core
+@babel/cli
+@babel/preset-env
+@babel/node
+
 ## project tree
 ### src
 Contain all code of server

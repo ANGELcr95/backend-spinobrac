@@ -33,22 +33,22 @@ console.log(path.join(__dirname, '../public'));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-io.on("connection", (socket) => {
-  console.log(`⚡: ${socket.id} user just connected!`);
-  socket.on("socketUsers", () => {
-    let id = `${socket.id}-${new Date().toLocaleString()}`
-    socket.broadcast.emit("socketUsers", id);
-  });
-  socket.on("socketReport", () => {
-    let id = `${socket.id}-${new Date().toLocaleString()}`
-    socket.broadcast.emit("socketReport", id);
-  });
-  socket.on("socketActivity", (data) => {
-    socket.broadcast.emit("socketActivity", data);
-  });
-  socket.on("socketRenderActivity", (data) => {
-    socket.broadcast.emit("socketRenderActivity", data);
-  });
-});
+// io.on("connection", (socket) => {
+//   console.log(`⚡: ${socket.id} user just connected!`);
+//   socket.on("socketUsers", () => {
+//     let id = `${socket.id}-${new Date().toLocaleString()}`
+//     socket.broadcast.emit("socketUsers", id);
+//   });
+//   socket.on("socketReport", () => {
+//     let id = `${socket.id}-${new Date().toLocaleString()}`
+//     socket.broadcast.emit("socketReport", id);
+//   });
+//   socket.on("socketActivity", (data) => {
+//     socket.broadcast.emit("socketActivity", data);
+//   });
+//   socket.on("socketRenderActivity", (data) => {
+//     socket.broadcast.emit("socketRenderActivity", data);
+//   });
+// });
 
 export default server;

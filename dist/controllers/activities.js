@@ -11,6 +11,8 @@ var _database = require("../database");
 
 var _hanldeError = _interopRequireDefault(require("../utils/hanldeError"));
 
+var _responseCodes = require("../utils/responseCodes");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -39,7 +41,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var getActivities = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var connection, _yield$connection$que, _yield$connection$que2, data;
+    var connection, _yield$connection$que, _yield$connection$que2, data, response, _response;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -59,21 +61,35 @@ var getActivities = /*#__PURE__*/function () {
             _yield$connection$que2 = _slicedToArray(_yield$connection$que, 1);
             data = _yield$connection$que2[0];
             connection.end();
-            res.json(data);
-            _context.next = 16;
+            response = {
+              responseCode: _responseCodes.responseCodes.COD_RESPONSE_SUCCESS,
+              responseMessage: {
+                message: 'Lista de actividades',
+                data: data
+              }
+            };
+            res.json(response);
+            _context.next = 18;
             break;
 
-          case 13:
-            _context.prev = 13;
+          case 14:
+            _context.prev = 14;
             _context.t0 = _context["catch"](0);
-            (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
+            _response = {
+              responseCode: _responseCodes.responseCodes.COD_RESPONSE_ERROR_LIST,
+              responseMessage: {
+                message: _context.t0.message,
+                data: null
+              }
+            };
+            (0, _hanldeError["default"])(_response, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
 
-          case 16:
+          case 18:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 13]]);
+    }, _callee, null, [[0, 14]]);
   }));
 
   return function getActivities(_x, _x2) {
@@ -273,7 +289,8 @@ exports.deleteActivity = deleteActivity;
 
 var updateActivity = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var put, connection, result;
+    var put, connection, result, response, _response2;
+
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -281,35 +298,47 @@ var updateActivity = /*#__PURE__*/function () {
             put = {
               done: req.body.done
             };
-            console.log(put);
-            _context6.prev = 2;
-            _context6.next = 5;
+            _context6.prev = 1;
+            _context6.next = 4;
             return (0, _database.connect)();
 
-          case 5:
+          case 4:
             connection = _context6.sent;
-            _context6.next = 8;
+            _context6.next = 7;
             return connection.query('UPDATE activities SET ? WHERE id = ?', [put, req.params.id]);
 
-          case 8:
+          case 7:
             result = _context6.sent;
             connection.end();
-            res.sendStatus(204);
+            response = {
+              responseCode: _responseCodes.responseCodes.COD_RESPONSE_SUCCESS,
+              responseMessage: {
+                message: 'Actualizado con éxito',
+                data: result
+              }
+            };
+            res.json(response);
             _context6.next = 17;
             break;
 
           case 13:
             _context6.prev = 13;
-            _context6.t0 = _context6["catch"](2);
-            console.log(_context6.t0);
-            (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
+            _context6.t0 = _context6["catch"](1);
+            _response2 = {
+              responseCode: _responseCodes.responseCodes.COD_RESPONSE_ERROR_UPDATE,
+              responseMessage: {
+                message: _context6.t0.message,
+                data: null
+              }
+            };
+            (0, _hanldeError["default"])(_response2, 'Ups... ocurrio un error al tratar de actualizar', 403);
 
           case 17:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[2, 13]]);
+    }, _callee6, null, [[1, 13]]);
   }));
 
   return function updateActivity(_x11, _x12) {

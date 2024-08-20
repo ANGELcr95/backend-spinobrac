@@ -1,5 +1,6 @@
 import { connect } from "../database"
 import handleHttpError from "../utils/hanldeError";
+import { responseCodes } from "../utils/responseCodes";
 
 export const getActivities = async (req, res)=> {
 
@@ -14,9 +15,23 @@ export const getActivities = async (req, res)=> {
         const connection = await connect()
         const [data] = await connection.query('SELECT * FROM activities')
         connection.end()
-        res.json(data)
+        const response = {
+            responseCode:  responseCodes.COD_RESPONSE_SUCCESS,
+            responseMessage: {
+                message: 'Lista de actividades',
+                data
+            }
+        }
+        res.json(response)
     } catch (error) {
-        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+        const response = {
+            responseCode:  responseCodes.COD_RESPONSE_ERROR_LIST,
+            responseMessage: {
+                message: error.message,
+                data: null
+            }
+        }
+        handleHttpError(response, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
 }
 export const getActivity = async(req, res)=> {
@@ -91,8 +106,6 @@ export const updateActivity = async (req, res)=> {
     let put = {
         done:req.body.done
     }
-    console.log(put);
-    
     try {
         const connection = await connect()
         const result = await connection.query('UPDATE activities SET ? WHERE id = ?',[
@@ -100,10 +113,22 @@ export const updateActivity = async (req, res)=> {
             req.params.id
         ])
         connection.end()
-        res.sendStatus(204)
+        const response = {
+            responseCode:  responseCodes.COD_RESPONSE_SUCCESS,
+            responseMessage: {
+                message: 'Actualizado con éxito',
+                data : result
+            }
+        }
+        res.json(response)
     } catch (error) {
-        console.log(error);
-        
-        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+        const response = {
+            responseCode: responseCodes.COD_RESPONSE_ERROR_UPDATE,
+            responseMessage: {
+              message: error.message,
+              data: null,
+            },
+          };
+        handleHttpError(response, 'Ups... ocurrio un error al tratar de actualizar', 403)
     }
 }
