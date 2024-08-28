@@ -21,14 +21,26 @@ export const userLogin = async(req, res)=> {
             
             if (checkPassWord) {
                 dataWorker[0].password = null
-                res.json(dataWorker[0])
-                return
+                const response = {
+                    responseCode:  responseCodes.COD_RESPONSE_SUCCESS,
+                    responseMessage: {
+                        message: 'Usuario exito',
+                        data: dataWorker[0]
+                    }
+                }
+                return response
             }
-            res.sendStatus(203)
-            return
         }
-        res.sendStatus(203)
+        throw new Error('Error usuario login')
+ 
     } catch (error) {
-        handleHttpError(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+        const response = {
+            responseCode:  responseCodes.COD_RESPONSE_ERROR_LOGIN,
+            responseMessage: {
+                message: error.message,
+                data: null
+            }
+        }
+        handleHttpError(response, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
     }
 }
