@@ -10,7 +10,7 @@ var _dotenv = require("dotenv");
 (0, _dotenv.config)();
 var config = {
   host: process.env.HOST,
-  user: process.env.USER,
+  user: process.env.USERS,
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 };

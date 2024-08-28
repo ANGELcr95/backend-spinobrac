@@ -35,7 +35,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var userLogin = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var _req$body, dni, password, connection, _yield$connection$que, _yield$connection$que2, dataWorker, checkPassWord;
+    var _req$body, dni, password, connection, _yield$connection$que, _yield$connection$que2, dataWorker, checkPassWord, response, _response;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -59,7 +59,7 @@ var userLogin = /*#__PURE__*/function () {
             connection.end();
 
             if (!(dataWorker.length > 0)) {
-              _context.next = 23;
+              _context.next = 21;
               break;
             }
 
@@ -76,29 +76,36 @@ var userLogin = /*#__PURE__*/function () {
             }
 
             dataWorker[0].password = null;
-            res.json(dataWorker[0]);
-            return _context.abrupt("return");
+            response = {
+              responseCode: responseCodes.COD_RESPONSE_SUCCESS,
+              responseMessage: {
+                message: 'Usuario exito',
+                data: dataWorker[0]
+              }
+            };
+            return _context.abrupt("return", response);
 
           case 21:
-            res.sendStatus(203);
-            return _context.abrupt("return");
+            throw new Error('Error usuario login');
 
-          case 23:
-            res.sendStatus(203);
-            _context.next = 29;
-            break;
-
-          case 26:
-            _context.prev = 26;
+          case 24:
+            _context.prev = 24;
             _context.t0 = _context["catch"](1);
-            (0, _hanldeError["default"])(res, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
+            _response = {
+              responseCode: responseCodes.COD_RESPONSE_ERROR_LOGIN,
+              responseMessage: {
+                message: _context.t0.message,
+                data: null
+              }
+            };
+            (0, _hanldeError["default"])(_response, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
 
-          case 29:
+          case 28:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 26]]);
+    }, _callee, null, [[1, 24]]);
   }));
 
   return function userLogin(_x, _x2) {
