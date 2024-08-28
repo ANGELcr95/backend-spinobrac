@@ -1,6 +1,7 @@
 import { connect } from "../database"
 import handleHttpError from "../utils/hanldeError";
 import { comparePass } from "../utils/handleBcrypt";
+import { responseCodes } from "../utils/responseCodes";
 
 export const userLogin = async(req, res)=> {
     console.log(req.body);
