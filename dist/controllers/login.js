@@ -100,7 +100,7 @@ var userLogin = /*#__PURE__*/function () {
                 data: null
               }
             };
-            (0, _hanldeError["default"])(_response, 'Ups... ocurrio un error al tratar de mostrar la información', 403);
+            (0, _hanldeError["default"])(res, _response, 403);
 
           case 28:
           case "end":

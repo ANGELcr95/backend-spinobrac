@@ -42,6 +42,6 @@ export const userLogin = async(req, res)=> {
                 data: null
             }
         }
-        handleHttpError(response, 'Ups... ocurrio un error al tratar de mostrar la información', 403)
+        handleHttpError(res , response, 403)
     }
 }
