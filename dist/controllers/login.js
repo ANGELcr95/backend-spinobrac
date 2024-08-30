@@ -65,12 +65,12 @@ var userLogin = /*#__PURE__*/function () {
               break;
             }
 
-            console.log(dataWorker[0]);
-            _context.next = 16;
+            _context.next = 15;
             return (0, _handleBcrypt.comparePass)(password, dataWorker[0].password);
 
-          case 16:
+          case 15:
             checkPassWord = _context.sent;
+            console.log(checkPassWord);
 
             if (!checkPassWord) {
               _context.next = 21;
@@ -85,7 +85,7 @@ var userLogin = /*#__PURE__*/function () {
                 data: dataWorker[0]
               }
             };
-            return _context.abrupt("return", response);
+            return _context.abrupt("return", res.json(response));
 
           case 21:
             throw new Error('Error usuario login');
@@ -93,6 +93,7 @@ var userLogin = /*#__PURE__*/function () {
           case 24:
             _context.prev = 24;
             _context.t0 = _context["catch"](1);
+            console.log(_context.t0);
             _response = {
               responseCode: _responseCodes.responseCodes.COD_RESPONSE_ERROR_LOGIN,
               responseMessage: {
@@ -102,7 +103,7 @@ var userLogin = /*#__PURE__*/function () {
             };
             (0, _hanldeError["default"])(res, _response, 403);
 
-          case 28:
+          case 29:
           case "end":
             return _context.stop();
         }

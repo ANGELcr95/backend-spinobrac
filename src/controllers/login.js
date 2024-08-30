@@ -17,9 +17,8 @@ export const userLogin = async(req, res)=> {
         connection.end()
         
         if (dataWorker.length > 0) {
-            console.log(dataWorker[0]);
             const checkPassWord = await comparePass(password, dataWorker[0].password)
-            
+            console.log(checkPassWord);
             if (checkPassWord) {
                 dataWorker[0].password = null
                 const response = {
@@ -29,12 +28,13 @@ export const userLogin = async(req, res)=> {
                         data: dataWorker[0]
                     }
                 }
-                return response
+                return res.json(response)
             }
         }
         throw new Error('Error usuario login')
  
     } catch (error) {
+        console.log(error)
         const response = {
             responseCode:  responseCodes.COD_RESPONSE_ERROR_LOGIN,
             responseMessage: {
